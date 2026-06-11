@@ -665,16 +665,16 @@ addListener(event: 'node', callback: (e: OnNodeChangeEvent) => void) => Promise<
 
 #### NodeOptions
 
-| Prop                  | Type                                                                                                                                                                                                                                                                                                                                           |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`unicastAddress`**  | <code>number</code>                                                                                                                                                                                                                                                                                                                            |
-| **`get`**             | <code><a href="#object">Object</a></code>                                                                                                                                                                                                                                                                                                      |
-| **`defaultTTL`**      | <code>{ setter?: <a href="#nodedefaultttl">NodeDefaultTTL</a>; }</code>                                                                                                                                                                                                                                                                        |
-| **`networkTransmit`** | <code>{ setter?: <a href="#nodenetworktransmit">NodeNetworkTransmit</a>; }</code>                                                                                                                                                                                                                                                              |
-| **`netkey`**          | <code>{ add?: <a href="#nodenetkey">NodeNetkey</a>; del?: <a href="#nodenetkey">NodeNetkey</a>; get?: <a href="#omit">Omit</a>&lt;<a href="#nodenetkeys">NodeNetkeys</a>, 'netkeyIndexes'&gt;; }</code>                                                                                                                                        |
-| **`appkey`**          | <code>{ add?: <a href="#omit">Omit</a>&lt;<a href="#nodeappkey">NodeAppkey</a>, 'netkeyIndex'&gt;; del?: <a href="#omit">Omit</a>&lt;<a href="#nodeappkey">NodeAppkey</a>, 'netkeyIndex'&gt;; get?: <a href="#partial">Partial</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#nodeappkeys">NodeAppkeys</a>, 'appkeyIndexes'&gt;&gt;; }</code>    |
-| **`heartbeat`**       | <code>{ pub?: { setter?: <a href="#partialany">PartialAny</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#heartbeatpub">HeartbeatPub</a>, 'features'&gt;, 'address' \| 'netkeyIndex' \| 'count'&gt;; }; sub?: { setter?: <a href="#omit">Omit</a>&lt;<a href="#heartbeatsub">HeartbeatSub</a>, 'count' \| 'minHops' \| 'maxHops'&gt;; }; }</code> |
-| **`bind`**            | <code>{ add?: <a href="#modelappkey">ModelAppkey</a>; del?: <a href="#modelappkey">ModelAppkey</a>; get?: <a href="#omit">Omit</a>&lt;<a href="#modelappkeys">ModelAppkeys</a>, 'appkeyIndexs'&gt;; }</code>                                                                                                                                   |
+| Prop                  | Type                                                                                                                                                                                                                                                                                                                                        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`unicastAddress`**  | <code>number</code>                                                                                                                                                                                                                                                                                                                         |
+| **`get`**             | <code><a href="#object">Object</a></code>                                                                                                                                                                                                                                                                                                   |
+| **`defaultTTL`**      | <code>{ set?: <a href="#nodedefaultttl">NodeDefaultTTL</a>; }</code>                                                                                                                                                                                                                                                                        |
+| **`networkTransmit`** | <code>{ set?: <a href="#nodenetworktransmit">NodeNetworkTransmit</a>; }</code>                                                                                                                                                                                                                                                              |
+| **`netkey`**          | <code>{ add?: <a href="#nodenetkey">NodeNetkey</a>; del?: <a href="#nodenetkey">NodeNetkey</a>; get?: <a href="#omit">Omit</a>&lt;<a href="#nodenetkeys">NodeNetkeys</a>, 'netkeyIndexes'&gt;; }</code>                                                                                                                                     |
+| **`appkey`**          | <code>{ add?: <a href="#omit">Omit</a>&lt;<a href="#nodeappkey">NodeAppkey</a>, 'netkeyIndex'&gt;; del?: <a href="#omit">Omit</a>&lt;<a href="#nodeappkey">NodeAppkey</a>, 'netkeyIndex'&gt;; get?: <a href="#partial">Partial</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#nodeappkeys">NodeAppkeys</a>, 'appkeyIndexes'&gt;&gt;; }</code> |
+| **`heartbeat`**       | <code>{ pub?: { set?: <a href="#partialany">PartialAny</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#heartbeatpub">HeartbeatPub</a>, 'features'&gt;, 'address' \| 'netkeyIndex' \| 'count'&gt;; }; sub?: { set?: <a href="#omit">Omit</a>&lt;<a href="#heartbeatsub">HeartbeatSub</a>, 'count' \| 'minHops' \| 'maxHops'&gt;; }; }</code>    |
+| **`bind`**            | <code>{ add?: <a href="#modelappkey">ModelAppkey</a>; del?: <a href="#modelappkey">ModelAppkey</a>; get?: <a href="#omit">Omit</a>&lt;<a href="#modelappkeys">ModelAppkeys</a>, 'appkeyIndexs'&gt;; }</code>                                                                                                                                |
 
 
 #### Object
@@ -1319,9 +1319,10 @@ Creates a new function.
 
 #### ModelResults
 
-| Prop        | Type                                              |
-| ----------- | ------------------------------------------------- |
-| **`onoff`** | <code><a href="#onoffmodel">OnOffModel</a></code> |
+| Prop         | Type                                                                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`onoff`**  | <code><a href="#onoffmodel">OnOffModel</a></code>                                                                                                                                                |
+| **`sensor`** | <code>{ get?: <a href="#sensormodel">SensorModel</a>; property?: <a href="#sensorrawvalue">SensorRawValue</a>; properties?: <a href="#sensorpropertiesmodel">SensorPropertiesModel</a>; }</code> |
 
 
 #### OnOffModel
@@ -1331,13 +1332,36 @@ Creates a new function.
 | **`state`** | <code>boolean</code> |
 
 
+#### SensorModel
+
+| Prop         | Type                                                                                        |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| **`values`** | <code><a href="#array">Array</a>&lt;<a href="#sensorrawvalue">SensorRawValue</a>&gt;</code> |
+
+
+#### SensorRawValue
+
+| Prop             | Type                                                  |
+| ---------------- | ----------------------------------------------------- |
+| **`propertyId`** | <code>number</code>                                   |
+| **`bytes`**      | <code><a href="#array">Array</a>&lt;number&gt;</code> |
+
+
+#### SensorPropertiesModel
+
+| Prop             | Type                                                                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **`properties`** | <code><a href="#array">Array</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#sensorrawvalue">SensorRawValue</a>, 'bytes'&gt;&gt;</code> |
+
+
 #### ModelOptions
 
-| Prop                 | Type                                                            |
-| -------------------- | --------------------------------------------------------------- |
-| **`elementAddress`** | <code>number</code>                                             |
-| **`appkeyIndex`**    | <code>number</code>                                             |
-| **`onoff`**          | <code>{ setter?: <a href="#onoffmodel">OnOffModel</a>; }</code> |
+| Prop                 | Type                                                                                                                                                                                                                                                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`elementAddress`** | <code>number</code>                                                                                                                                                                                                                                                                                                 |
+| **`appkeyIndex`**    | <code>number</code>                                                                                                                                                                                                                                                                                                 |
+| **`onoff`**          | <code>{ set?: <a href="#onoffmodel">OnOffModel</a>; }</code>                                                                                                                                                                                                                                                        |
+| **`sensor`**         | <code>{ propertyId: number; get?: <a href="#omit">Omit</a>&lt;<a href="#sensormodel">SensorModel</a>, 'values'&gt;; property?: <a href="#partialany">PartialAny</a>&lt;<a href="#sensorrawvalue">SensorRawValue</a>, 'bytes'&gt;; properties?: <a href="#sensorpropertiesmodel">SensorPropertiesModel</a>; }</code> |
 
 
 #### ScanResults

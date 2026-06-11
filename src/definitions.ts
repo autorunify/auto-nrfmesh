@@ -87,22 +87,17 @@ export interface OnOffModel {
   state: boolean
 }
 
-export interface SensorValue {
+export interface SensorRawValue {
   propertyId: number
   bytes: Array<number>
 }
 
 export interface SensorModel {
-  values: Array<SensorValue>
-}
-
-export interface SensorPropertyModel {
-  propertyId: number
-  bytes?: Array<number>
+  values: Array<SensorRawValue>
 }
 
 export interface SensorPropertiesModel {
-  properties: Array<Omit<SensorPropertyModel, 'bytes'>>
+  properties: Array<Omit<SensorRawValue, 'bytes'>>
 }
 
 export interface NetKeysResults {
@@ -264,8 +259,8 @@ export interface ModelOptions extends TimeoutOptions {
   },
   sensor?: {
     propertyId: number
-    get?: Omit<SensorModel, 'bytes'>
-    property?: SensorPropertyModel
+    get?: Omit<SensorModel, 'values'>
+    property?: PartialAny<SensorRawValue, 'bytes'>
     properties?: SensorPropertiesModel
   }
 }
@@ -274,7 +269,7 @@ export interface ModelResults {
   onoff?: OnOffModel,
   sensor?: {
     get?: SensorModel
-    property?: SensorPropertyModel
+    property?: SensorRawValue
     properties?: SensorPropertiesModel
   }
 }

@@ -7,4 +7,5 @@ const NrfMesh = registerPlugin<NrfMeshPlugin>('NrfMesh', {
 });
 
 export * from './definitions';
+export * from './sensor'
 export { NrfMesh };
