@@ -1,4 +1,4 @@
-# autorunify-capacitor-nrfmesh
+# auto-nrfmesh
 
 nrf mesh plugin
 
@@ -7,13 +7,13 @@ nrf mesh plugin
 To use npm
 
 ```bash
-npm install autorunify-capacitor-nrfmesh
+npm install @autorunify/capacitor-nrfmesh
 ````
 
 To use yarn
 
 ```bash
-yarn add autorunify-capacitor-nrfmesh
+yarn add @autorunify/capacitor-nrfmesh
 ```
 
 Sync native files

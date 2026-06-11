@@ -1,6 +1,6 @@
 {
-  "name": "@capacitor/autorunify-nrfmesh",
-  "version": "0.0.1",
+  "name": "@autorunify/capacitor-nrfmesh",
+  "version": "0.0.2",
   "description": "nrf mesh plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
