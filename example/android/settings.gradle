@@ -1,0 +1,8 @@
+include ':app'
+include ':capacitor-cordova-android-plugins'
+project(':capacitor-cordova-android-plugins').projectDir = new File('./capacitor-cordova-android-plugins/')
+
+include ':nrf-mesh'
+project(':nrf-mesh').projectDir = new File('../node_modules/@capacitor/autorunify-nrfmesh/Android-nRF-Mesh-Library/mesh')
+
+apply from: 'capacitor.settings.gradle'
