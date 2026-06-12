@@ -44,6 +44,7 @@ npx cap sync
 * [`node(...)`](#node)
 * [`model(...)`](#model)
 * [`init()`](#init)
+* [`kill()`](#kill)
 * [`devices(...)`](#devices)
 * [`identify(...)`](#identify)
 * [`provision(...)`](#provision)
@@ -282,6 +283,15 @@ init() => Promise<any>
 ```
 
 **Returns:** <code>Promise&lt;any&gt;</code>
+
+--------------------
+
+
+### kill()
+
+```typescript
+kill() => Promise<void>
+```
 
 --------------------
 

@@ -47,6 +47,7 @@ export class NrfMeshWeb extends WebPlugin implements NrfMeshPlugin {
   async model(): Promise<ModelResults> { return {} as ModelResults }
 
   async init(): Promise<void> { }
+  async kill(): Promise<void> { }
   async devices(): Promise<ScanResults> { return {} as ScanResults }
   async identify(): Promise<IdentifyResults> { return {} as IdentifyResults };
   async provision(): Promise<ProvisionResults> { return {} as ProvisionResults }

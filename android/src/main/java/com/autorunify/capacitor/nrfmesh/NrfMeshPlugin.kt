@@ -47,7 +47,6 @@ import no.nordicsemi.android.mesh.opcodes.ConfigMessageOpCodes.CONFIG_NETWORK_TR
 import no.nordicsemi.android.mesh.opcodes.ConfigMessageOpCodes.CONFIG_NETWORK_TRANSMIT_SET
 import no.nordicsemi.android.mesh.opcodes.ConfigMessageOpCodes.CONFIG_SIG_MODEL_APP_GET
 import no.nordicsemi.android.mesh.opcodes.ConfigMessageOpCodes.CONFIG_VENDOR_MODEL_APP_GET
-import no.nordicsemi.android.mesh.sensorutils.DeviceProperty
 import no.nordicsemi.android.mesh.transport.ConfigAppKeyAdd
 import no.nordicsemi.android.mesh.transport.ConfigAppKeyDelete
 import no.nordicsemi.android.mesh.transport.ConfigAppKeyGet
@@ -69,8 +68,6 @@ import no.nordicsemi.android.mesh.transport.ConfigSigModelAppGet
 import no.nordicsemi.android.mesh.transport.ConfigVendorModelAppGet
 import no.nordicsemi.android.mesh.transport.GenericOnOffGet
 import no.nordicsemi.android.mesh.transport.GenericOnOffSet
-import no.nordicsemi.android.mesh.transport.SensorSettingGet
-import no.nordicsemi.android.mesh.transport.SensorSettingsGet
 import java.util.UUID
 import kotlin.random.Random
 
@@ -448,12 +445,31 @@ class NrfMeshPlugin : Plugin {
         if (!this.ble.assertAdapter(call)) return
         if (!this.ble.assertEnabled(call)) return
 
-        try {
-            async.on(call, MESH_NETWORK_INIT)
-            ble.scan(true)
-            mesh.init()
-        } catch (ex: Exception) {
-            call.reject(ex.message)
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                async.on(call, MESH_NETWORK_INIT)
+                ble.scan(true)
+                mesh.init()
+            } catch (ex: Exception) {
+                call.reject(ex.message)
+            }
+        }
+    }
+
+    @PluginMethod
+    fun kill(call: PluginCall) {
+        if (!this.ble.assertFeature(call)) return
+        if (!this.ble.assertAdapter(call)) return
+        if (!this.ble.assertEnabled(call)) return
+
+        CoroutineScope(Dispatchers.Default).launch {
+            try {
+                ble.disconnect()
+                ble.scan(false)
+                call.resolve()
+            } catch (ex: Exception) {
+                call.reject(ex.message)
+            }
         }
     }
 

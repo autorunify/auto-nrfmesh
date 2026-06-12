@@ -1,6 +1,6 @@
 {
   "name": "@autorunify/capacitor-nrfmesh",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "nrf mesh plugin",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -21,10 +21,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/autorunify/autorunify-capacitor-nrfmesh.git"
+    "url": "git+https://github.com/autorunify/auto-nrfmesh.git"
   },
   "bugs": {
-    "url": "https://github.com/autorunify/autorunify-capacitor-nrfmesh/issues"
+    "url": "https://github.com/autorunify/auto-nrfmesh/issues"
   },
   "keywords": [
     "capacitor",

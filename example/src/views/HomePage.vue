@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonList, IonItem } from '@ionic/vue';
-import { NrfMesh, PermissionKey, PermissionState, MeshDevice, Bool, SensorValue, Int24Value } from "@capacitor/autorunify-nrfmesh";
+import { NrfMesh, PermissionKey, PermissionState, MeshDevice, Bool, SensorValue, Int24Value } from "@autorunify/capacitor-nrfmesh";
 import { onMounted, ref } from 'vue';
 
 const devicesRef = ref<Array<MeshDevice>>([])

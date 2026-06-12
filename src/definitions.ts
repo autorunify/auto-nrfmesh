@@ -383,6 +383,7 @@ export interface NrfMeshPlugin {
   model(options: ModelOptions): Promise<ModelResults>
 
   init(): Promise<any>;
+  kill(): Promise<void>
   devices(options?: ScanOptions): Promise<ScanResults>;
   identify(options: IdentifyOptions): Promise<IdentifyResults>;
   provision(options: ProvisionOptions): Promise<ProvisionResults>;

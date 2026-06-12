@@ -159,6 +159,7 @@ class BleManager {
     private val notify: NrfMeshPlugin
     private val mesh: MeshManager
     private val async: AsyncManager
+    private lateinit var context: Context
 
     private lateinit var adapter: BluetoothAdapter
     private lateinit var stateReceiver: StateReceiver
@@ -185,27 +186,17 @@ class BleManager {
 
         val manager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         this.adapter = manager.adapter
+        this.context = context
+
+        this.stateReceiver = StateReceiver(this)
+        this.scanReceiver = ScanReceiver(this)
     }
 
     fun handleOnStart(context: Context) {
-        this.stateReceiver = StateReceiver(this)
-        this.scanReceiver = ScanReceiver(this)
 
-
-        val filter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
-        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
-
-        context.registerReceiver(this.stateReceiver, filter)
     }
 
     fun handleOnStop(context: Context) {
-        try {
-            context.unregisterReceiver(this.stateReceiver)
-        } catch (e: IllegalArgumentException) {
-
-        }
-
         this.scan(false)
 
         if (isConnected.value!!) {
@@ -247,6 +238,15 @@ class BleManager {
 
     fun scan(startScan: Boolean) {
         if (startScan) {
+            try {
+                val filter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
+                filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED)
+                filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED)
+                context.registerReceiver(this.stateReceiver, filter)
+            } catch (ex: Exception) {
+            }
+
+
             val settings = ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .setReportDelay(0)
@@ -274,6 +274,11 @@ class BleManager {
             synchronized(this) {
                 if (!isScanning) return
                 isScanning = false
+                try {
+                    context.unregisterReceiver(this.stateReceiver)
+                } catch (ex: Exception) {
+                }
+
 
                 val scanner = BluetoothLeScannerCompat.getScanner()
                 scanner.stopScan(scanReceiver)
