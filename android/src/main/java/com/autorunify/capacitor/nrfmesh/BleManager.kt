@@ -114,6 +114,7 @@ class BleManager {
                         ble.devices.add(device)
                     } else if (_device.provisioned) {
                         ble.devices.remove(_device)
+                    } else {
                     }
                 }
             } else if (uuid == MeshManagerApi.MESH_PROXY_UUID) {
@@ -137,6 +138,7 @@ class BleManager {
                         ble.devices.add(device)
                     } else if (!_device.provisioned) {
                         ble.devices.remove(_device)
+                    } else {
                     }
                 }
             }
