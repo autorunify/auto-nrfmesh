@@ -284,6 +284,7 @@ export interface MeshDevice {
 
 export interface ScanOptions extends TimeoutOptions {
   filter?: 'all' | 'provisioned' | 'unprovisioned'
+  max?: number
 }
 
 export interface ScanResults {

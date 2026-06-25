@@ -481,9 +481,14 @@ class NrfMeshPlugin : Plugin {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val timeout = call.getInt("timeout", 5000)
+                val timeout = call.getInt("timeout", 5)!!
+                val max = call.getInt("max", 0)!!
                 val filter = call.getString("filter", "all")
-                val devices = ble.devicesWithFilter(filter!!, timeout!!)
+                val devices = ble.devicesWithFilter(
+                    filter!!,
+                    max,
+                    if (timeout <= 0) 1000 else timeout * 1000
+                )
 
                 call.resolve(JSObject().apply {
                     put("devices", JSArray().apply {

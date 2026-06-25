@@ -1397,6 +1397,7 @@ Creates a new function.
 | Prop         | Type                                                   |
 | ------------ | ------------------------------------------------------ |
 | **`filter`** | <code>'all' \| 'provisioned' \| 'unprovisioned'</code> |
+| **`max`**    | <code>number</code>                                    |
 
 
 #### IdentifyResults

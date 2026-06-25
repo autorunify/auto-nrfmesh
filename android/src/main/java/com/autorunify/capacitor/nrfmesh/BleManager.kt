@@ -288,7 +288,7 @@ class BleManager {
         }
     }
 
-    suspend fun devicesWithFilter(filter: String, timeout: Int): List<MeshDevice> {
+    suspend fun devicesWithFilter(filter: String, max: Int, timeout: Int): List<MeshDevice> {
         this.scan(false)
 
         synchronized(devices) {
@@ -296,21 +296,34 @@ class BleManager {
         }
 
         this.scan(true)
-        delay(timeout.toLong())
 
-        val _devices: MutableList<MeshDevice> = mutableListOf()
-        synchronized(devices) {
-            devices.forEach { device ->
-                if (filter == "provisioned" && device.provisioned) {
-                    _devices.add(device)
-                } else if (filter == "unprovisioned" && !device.provisioned) {
-                    _devices.add(device)
-                } else if (filter == "all") {
-                    _devices.add(device)
+        val timeMillis = 200L
+        var timeCount = timeout.toLong() / timeMillis
+        var devicesByFilter: MutableList<MeshDevice> = mutableListOf()
+
+        while (timeCount > 0) {
+            delay(timeMillis)
+            synchronized(devices) {
+                devices.forEach { device ->
+                    if (filter == "provisioned" && device.provisioned) {
+                        devicesByFilter.add(device)
+                    } else if (filter == "unprovisioned" && !device.provisioned) {
+                        devicesByFilter.add(device)
+                    } else if (filter == "all") {
+                        devicesByFilter.add(device)
+                    }
                 }
             }
+
+            if (max > 0 && devicesByFilter.size >= max) {
+                break
+            } else {
+                devicesByFilter = mutableListOf()
+                timeCount--;
+            }
         }
-        return _devices
+
+        return devicesByFilter
     }
 
     fun disconnect(): Boolean {
