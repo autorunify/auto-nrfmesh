@@ -258,7 +258,7 @@ export interface ModelOptions extends TimeoutOptions {
     set?: OnOffModel
   },
   sensor?: {
-    propertyId: number
+    propertyId?: number
     get?: Omit<SensorModel, 'values'>
     property?: PartialAny<SensorRawValue, 'bytes'>
     properties?: SensorPropertiesModel

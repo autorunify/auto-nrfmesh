@@ -904,17 +904,19 @@ class NrfMeshPlugin : Plugin {
 
                 val sensorOpts = call.getObject("sensor")
                 if (sensorOpts != null) {
-                    val propertyId = sensorOpts.getInteger("propertyId")
-                        ?: return@launch call.reject("sensor options propertyId is required")
-
                     val getOpts = sensorOpts.getJSObject("get")
                     if (getOpts != null) {
-                        val message = SensorGetWrapper(appkey, propertyId.toShort())
+                        val propertyId = sensorOpts.getInteger("propertyId")
+
+                        val message = SensorGetWrapper(appkey, propertyId?.toShort())
                         pairs.add(MessagePair(SENSOR_GET, message))
                     }
 
                     val propertyOpts = sensorOpts.getJSObject("property")
                     if (propertyOpts != null) {
+                        val propertyId = sensorOpts.getInteger("propertyId")
+                            ?: return@launch call.reject("sensor options propertyId is required")
+
                         val setPropertyId = propertyOpts.getInteger("propertyId")
                             ?: return@launch call.reject("sensor.property options propertyId is required")
                         val setBytes = propertyOpts.optJSONArray("bytes")
@@ -944,6 +946,9 @@ class NrfMeshPlugin : Plugin {
 
                     val propertiesOpts = sensorOpts.getJSObject("properties")
                     if (propertiesOpts != null) {
+                        val propertyId = sensorOpts.getInteger("propertyId")
+                            ?: return@launch call.reject("sensor options propertyId is required")
+
                         val message = SensorSettingsGetWrapper(
                             appkey,
                             propertyId.toShort()

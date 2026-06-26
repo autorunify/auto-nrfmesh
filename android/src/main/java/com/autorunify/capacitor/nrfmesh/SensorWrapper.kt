@@ -16,13 +16,15 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder.LITTLE_ENDIAN
 
 class SensorGetWrapper : SensorGet {
-    constructor(appkey: ApplicationKey, propertyId: Short)
+    constructor(appkey: ApplicationKey, propertyId: Short?)
             : super(appkey, DeviceProperty.UNKNOWN) {
-        this.mParameters = ByteBuffer
-            .allocate(2)
-            .order(LITTLE_ENDIAN)
-            .putShort(propertyId)
-            .array()
+        if (propertyId != null) {
+            this.mParameters = ByteBuffer
+                .allocate(2)
+                .order(LITTLE_ENDIAN)
+                .putShort(propertyId)
+                .array()
+        }
     }
 }
 
