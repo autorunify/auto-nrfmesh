@@ -303,6 +303,7 @@ class BleManager {
 
         while (timeCount > 0) {
             delay(timeMillis)
+            devicesByFilter.clear()
             synchronized(devices) {
                 devices.forEach { device ->
                     if (filter == "provisioned" && device.provisioned) {
@@ -318,7 +319,6 @@ class BleManager {
             if (max > 0 && devicesByFilter.size >= max) {
                 break
             } else {
-                devicesByFilter = mutableListOf()
                 timeCount--;
             }
         }
@@ -328,8 +328,10 @@ class BleManager {
 
     fun disconnect(): Boolean {
         try {
-            if (isConnected.value!!) {
+            if (isConnected.value == true) {
                 mesh.disconnect()
+            } else {
+                async.emit(JSObject(), MESH_STATE_DISCONNECTED)
             }
 
             return isConnected.value!!

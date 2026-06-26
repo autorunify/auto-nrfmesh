@@ -24,7 +24,7 @@ class MeshDevice {
         this.rssi = scanResult.rssi
 
         this.scanRecord = scanResult.scanRecord
-        this.name = if (scanRecord != null) scanRecord.deviceName!! else "Unknown"
+        this.name = scanRecord?.deviceName ?: "Unknown"
     }
 
     fun match(scanResult: ScanResult): Boolean {

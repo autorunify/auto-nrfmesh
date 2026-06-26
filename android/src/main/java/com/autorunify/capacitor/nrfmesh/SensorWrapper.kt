@@ -17,7 +17,7 @@ import java.nio.ByteOrder.LITTLE_ENDIAN
 
 class SensorGetWrapper : SensorGet {
     constructor(appkey: ApplicationKey, propertyId: Short?)
-            : super(appkey, DeviceProperty.UNKNOWN) {
+            : super(appkey, null) {
         if (propertyId != null) {
             this.mParameters = ByteBuffer
                 .allocate(2)
