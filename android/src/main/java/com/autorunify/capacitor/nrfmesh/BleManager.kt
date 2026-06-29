@@ -39,6 +39,10 @@ class BleManager {
             when (state) {
                 BluetoothAdapter.STATE_ON -> {
                     ble.notify.notifyListeners(eventName, JSObject().apply {
+                        synchronized(ble.devices){
+                            ble.devices.clear()
+                        }
+
                         ble.device = null
                         ble.isConnected.postValue(false)
                         put("action", "enabled")
@@ -67,6 +71,10 @@ class BleManager {
                 }
 
                 BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
+                    synchronized(ble.devices){
+                        ble.devices.clear()
+                    }
+
                     ble.device = null
                     ble.isConnected.postValue(false)
                     ble.notify.notifyListeners(eventName, JSObject().apply {
