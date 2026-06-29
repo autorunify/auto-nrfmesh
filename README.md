@@ -106,12 +106,12 @@ isConnected() => Promise<ConnectionState>
 ### connect(...)
 
 ```typescript
-connect(options?: TimeoutOptions | undefined) => Promise<void>
+connect(options?: ConnectOptions | undefined) => Promise<void>
 ```
 
 | Param         | Type                                                      |
 | ------------- | --------------------------------------------------------- |
-| **`options`** | <code><a href="#timeoutoptions">TimeoutOptions</a></code> |
+| **`options`** | <code><a href="#connectoptions">ConnectOptions</a></code> |
 
 --------------------
 
@@ -403,6 +403,13 @@ addListener(event: 'node', callback: (e: OnNodeChangeEvent) => void) => Promise<
 | Prop            | Type                 |
 | --------------- | -------------------- |
 | **`connected`** | <code>boolean</code> |
+
+
+#### ConnectOptions
+
+| Prop          | Type                |
+| ------------- | ------------------- |
+| **`address`** | <code>string</code> |
 
 
 #### TimeoutOptions

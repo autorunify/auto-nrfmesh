@@ -39,7 +39,7 @@ class BleManager {
             when (state) {
                 BluetoothAdapter.STATE_ON -> {
                     ble.notify.notifyListeners(eventName, JSObject().apply {
-                        synchronized(ble.devices){
+                        synchronized(ble.devices) {
                             ble.devices.clear()
                         }
 
@@ -71,7 +71,7 @@ class BleManager {
                 }
 
                 BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
-                    synchronized(ble.devices){
+                    synchronized(ble.devices) {
                         ble.devices.clear()
                     }
 
@@ -408,7 +408,7 @@ class BleManager {
         return false
     }
 
-    suspend fun connectToProvisioned(): Boolean {
+    suspend fun connectToProvisioned(address: String? = null): Boolean {
         if (isConnected.value == true || mesh.isConnected) {
             if (device?.provisioned == true && device?.address == mesh.device?.address) {
                 return true
@@ -438,13 +438,23 @@ class BleManager {
                 continue
             }
 
+            if (address != null) {
+                val device = _devices.firstOrNull { device -> device.address == address }
+                if (device == null) {
+                    delay(500)
+                    continue
+                }
 
-            _devices.sortBy { device -> device.rssi }
-
-            if (connect(_devices.firstOrNull())) {
-
-                mesh.addFilterToProxy()
-                return true
+                if (connect(device)) {
+                    mesh.addFilterToProxy()
+                    return true
+                }
+            } else {
+                _devices.sortBy { device -> device.rssi }
+                if (connect(_devices.firstOrNull())) {
+                    mesh.addFilterToProxy()
+                    return true
+                }
             }
         }
 

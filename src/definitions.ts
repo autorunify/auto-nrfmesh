@@ -29,6 +29,10 @@ export interface ConnectionState {
   connected: boolean
 }
 
+export interface ConnectOptions extends TimeoutOptions {
+  address: string;
+}
+
 export interface NetKey {
   index: number;
   key: string;
@@ -363,7 +367,7 @@ export interface NrfMeshPlugin {
   isBluetoothEnabled(): Promise<BluetoothState>;
 
   isConnected(): Promise<ConnectionState>;
-  connect(options?: TimeoutOptions): Promise<void>;
+  connect(options?: ConnectOptions): Promise<void>;
   disconnect(options?: TimeoutOptions): Promise<void>;
 
   export(): Promise<any>

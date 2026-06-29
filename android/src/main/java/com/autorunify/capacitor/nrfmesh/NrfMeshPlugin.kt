@@ -183,7 +183,8 @@ class NrfMeshPlugin : Plugin {
         if (!this.mesh.assertNetwork(call)) return
 
         CoroutineScope(Dispatchers.Default).launch {
-            ble.connectToProvisioned()
+            val address = call.getString("address")
+            ble.connectToProvisioned(address)
             call.resolve()
         }
     }
