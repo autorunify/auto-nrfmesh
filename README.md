@@ -1366,9 +1366,9 @@ Creates a new function.
 
 #### SensorPropertiesModel
 
-| Prop             | Type                                                                                                                                 |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **`properties`** | <code><a href="#array">Array</a>&lt;<a href="#omit">Omit</a>&lt;<a href="#sensorrawvalue">SensorRawValue</a>, 'bytes'&gt;&gt;</code> |
+| Prop             | Type                                                  |
+| ---------------- | ----------------------------------------------------- |
+| **`properties`** | <code><a href="#array">Array</a>&lt;number&gt;</code> |
 
 
 #### ModelOptions

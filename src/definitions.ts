@@ -101,7 +101,7 @@ export interface SensorModel {
 }
 
 export interface SensorPropertiesModel {
-  properties: Array<Omit<SensorRawValue, 'bytes'>>
+  properties: Array<number>
 }
 
 export interface NetKeysResults {
