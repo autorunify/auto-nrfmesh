@@ -477,7 +477,6 @@ class MeshManager {
     }
 
     fun disconnect() {
-        if(!isConnected) return
         gatt.disconnect().timeout(2000).await()
     }
 
