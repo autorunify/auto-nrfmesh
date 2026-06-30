@@ -477,10 +477,12 @@ class MeshManager {
     }
 
     fun disconnect() {
+        if(!isConnected) return
         gatt.disconnect().timeout(2000).await()
     }
 
     fun connect(device: MeshDevice) {
+        if (isConnected) disconnect()
         gatt.connect(device.device).retry(20, 500).await()
     }
 

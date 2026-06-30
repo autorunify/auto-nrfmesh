@@ -466,6 +466,7 @@ class NrfMeshPlugin : Plugin {
         CoroutineScope(Dispatchers.Default).launch {
             try {
                 ble.disconnect()
+                ble.isConnected.postValue(false)
                 ble.scan(false)
                 call.resolve()
             } catch (ex: Exception) {

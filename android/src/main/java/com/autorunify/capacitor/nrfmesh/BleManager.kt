@@ -344,6 +344,8 @@ class BleManager {
 
             return isConnected.value!!
         } catch (ex: Exception) {
+
+            async.emit(JSObject(), MESH_STATE_DISCONNECTED)
             return false
         }
     }
