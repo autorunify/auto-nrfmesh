@@ -230,14 +230,17 @@ class MeshManager {
                 }
                 if (unode != null) mesh.unodes.remove(unode)
 
-
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         mesh.disconnect()
                     } catch (ex: Exception) {
                     }
                 }
-                meshNode!!.nodeName = meshNode.unicastAddress.toString(16).padStart(4, '0')
+
+                meshNode!!.nodeName=meshNode
+                    .uuid
+                    .replace("-","")
+                    .substring(8,20)
 
                 mesh.async.emit(JSObject().apply {
                     put("completed", true)

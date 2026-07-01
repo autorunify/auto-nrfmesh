@@ -103,6 +103,7 @@ class FormatManager {
     @SuppressLint("RestrictedApi")
     fun toJSON(node: ProvisionedMeshNode): JSObject {
         return JSObject().apply {
+            put("uuid", node.uuid)
             put("name", node.nodeName)
             put("deviceKey", MeshParserUtils.bytesToHex(node.deviceKey, false))
             put("unicastAddress", node.unicastAddress)
