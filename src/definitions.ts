@@ -57,6 +57,7 @@ export interface MeshGroup {
 }
 
 export interface MeshNode {
+  uuid: string
   name: string
   deviceKey: string
   unicastAddress: number
