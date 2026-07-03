@@ -284,7 +284,6 @@ export interface MeshDevice {
   name: string
   provisioned: boolean
   rssi: number
-  uuid?: string
 }
 
 export interface ScanOptions extends TimeoutOptions {
@@ -298,7 +297,6 @@ export interface ScanResults {
 
 export interface IdentifyOptions extends TimeoutOptions {
   address: string;
-  uuid: string;
 }
 
 export interface IdentifyResults {
@@ -315,13 +313,10 @@ export interface IdentifyResults {
 
 export interface ProvisionOptions extends TimeoutOptions {
   address: string;
-  uuid: string;
 }
 
 export interface ProvisionResults {
-  completed: boolean;
-  uuid: string;
-  unicastAddress?: number;
+  unicastAddress: number;
 }
 
 export interface CompositionOptions extends TimeoutOptions {

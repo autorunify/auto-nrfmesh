@@ -75,24 +75,20 @@ async function onDeviceScanner() {
 
 async function onDeviceBind(dev: MeshDevice) {
   const d0 = await NrfMesh.identify({
-    uuid: dev.uuid as string,
     address: dev.address
   })
 
   console.log(d0)
 
   const d1 = await NrfMesh.provision({
-    uuid: dev.uuid as string,
     address: dev.address
   })
 
   console.log(d1)
 
-  if (!d1.completed) return
-
   const d2 = await NrfMesh.composition({
     timeout: 20,
-    unicastAddress: d1.unicastAddress as number
+    unicastAddress: d1.unicastAddress
   })
 
   console.log(d2)

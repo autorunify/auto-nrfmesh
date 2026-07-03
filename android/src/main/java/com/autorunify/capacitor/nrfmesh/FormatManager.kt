@@ -43,10 +43,6 @@ class FormatManager {
             put("name", device.name)
             put("rssi", device.rssi)
             put("provisioned", device.provisioned)
-
-            if (!device.provisioned) {
-                put("uuid", device.uuid)
-            }
         }
     }
 

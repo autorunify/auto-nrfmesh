@@ -20,7 +20,6 @@ import no.nordicsemi.android.mesh.MeshManagerApi
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat
 import no.nordicsemi.android.support.v18.scanner.ScanCallback
 import no.nordicsemi.android.support.v18.scanner.ScanFilter
-import no.nordicsemi.android.support.v18.scanner.ScanRecord
 import no.nordicsemi.android.support.v18.scanner.ScanResult
 import no.nordicsemi.android.support.v18.scanner.ScanSettings
 import java.util.UUID
@@ -106,12 +105,10 @@ class BleManager {
                 if (record.bytes == null || record.serviceUuids == null) return
 
                 synchronized(ble.devices) {
-                    val service = getService(result, MeshManagerApi.MESH_PROVISIONING_UUID)
+                    val service = device.getService(MeshManagerApi.MESH_PROVISIONING_UUID)
                     if (service == null || service.size < 18) return
 
-
-                    ble.mesh.delNodeByService(service)
-                    device.uuid = ble.mesh.uuidFromService(service).toString()
+                    ble.mesh.delNodeByName(device.address.replace(":", ""))
                     device.provisioned = false
 
                     val _device = ble.devices.find { v ->
@@ -133,11 +130,13 @@ class BleManager {
                 if (record.bytes == null || record.serviceUuids == null) return
 
                 synchronized(ble.devices) {
-                    val service = getService(result, MeshManagerApi.MESH_PROXY_UUID) ?: return
-                    if (!ble.mesh.isProvisionedByService(service)) return
+                    val service = device.getService(MeshManagerApi.MESH_PROXY_UUID) ?: return
+                    if (!ble.mesh.isProvisionedByService(service)) {
+                        ble.mesh.delNodeByName(device.address.replace("", ""))
+                        return
+                    }
 
                     device.provisioned = true
-
                     val _device = ble.devices.find { v ->
                         v.address == device.address
                     }
@@ -154,15 +153,6 @@ class BleManager {
 
         override fun onScanFailed(errorCode: Int) {
             ble.scan(false)
-        }
-
-        fun getService(scanResult: ScanResult, serviceUuid: UUID): ByteArray? {
-            val scanRecord: ScanRecord? = scanResult.scanRecord
-            if (scanRecord != null) {
-                return scanRecord.getServiceData(ParcelUuid((serviceUuid)))
-            }
-
-            return null
         }
     }
 
@@ -363,10 +353,11 @@ class BleManager {
         return isConnected.value!!
     }
 
-    suspend fun connectToUnprovisioned(address: String, uuid: String): Boolean {
+    suspend fun connectToUnprovisioned(address: String): UUID? {
         if (isConnected.value == true) {
             if (device?.provisioned == false && device?.address == address) {
-                return true
+                val service = device!!.getService(MeshManagerApi.MESH_PROVISIONING_UUID)
+                return mesh.uuidFromService(service!!)
             } else {
                 disconnect()
             }
@@ -395,19 +386,16 @@ class BleManager {
 
 
             _devices.sortBy { device -> device.rssi }
-            return connect(_devices.firstOrNull {
-                it.let {
-                    val service = scanReceiver.getService(
-                        it.scanResult,
-                        MeshManagerApi.MESH_PROVISIONING_UUID
-                    )
-                    val deviceUUID = mesh.uuidFromService(service!!)
-                    deviceUUID.toString() == uuid
-                }
-            })
+            val _device = _devices.firstOrNull {
+                it.address.equals(address, true)
+            }
+            if (connect(_device)) {
+                val service = _device!!.getService(MeshManagerApi.MESH_PROVISIONING_UUID)
+                return mesh.uuidFromService(service!!)
+            }
         }
 
-        return false
+        return null
     }
 
     suspend fun connectToProvisioned(address: String? = null): Boolean {

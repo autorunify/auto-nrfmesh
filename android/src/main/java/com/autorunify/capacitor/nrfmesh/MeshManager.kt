@@ -171,7 +171,7 @@ class MeshManager {
                     address
                 )
 
-                is SensorStatus-> mesh.async.emit(
+                is SensorStatus -> mesh.async.emit(
                     mesh.formatter.toJSON(msg),
                     msg.opCode,
                     address
@@ -208,10 +208,7 @@ class MeshManager {
         ) {
             if (state == ProvisioningState.States.PROVISIONING_FAILED) {
                 mesh.unodes.remove(meshNode!!)
-                mesh.async.emit(JSObject().apply {
-                    put("completed", false)
-                    put("uuid", meshNode.deviceUuid)
-                }, MESH_NODE_PROVISION)
+                mesh.async.error("provisioning failed ${meshNode.nodeName}", MESH_NODE_PROVISION,0)
             }
         }
 
@@ -237,20 +234,13 @@ class MeshManager {
                     }
                 }
 
-                meshNode!!.nodeName=meshNode
-                    .uuid
-                    .replace("-","")
-                    .substring(8,20)
-
                 mesh.async.emit(JSObject().apply {
-                    put("completed", true)
-                    put("uuid", meshNode.uuid)
-                    put("unicastAddress", meshNode.unicastAddress)
+                    put("unicastAddress", meshNode!!.unicastAddress)
                 }, MESH_NODE_PROVISION)
 
                 mesh.notify.notifyListeners("node", JSObject().apply {
                     put("action", "add")
-                    put("unicastAddress", meshNode.unicastAddress)
+                    put("unicastAddress", meshNode!!.unicastAddress)
                 })
             }
         }
@@ -448,16 +438,15 @@ class MeshManager {
         return api.getDeviceUuid(service)
     }
 
-    fun delNodeByService(service: ByteArray) {
-        api.meshNetwork?.nodes?.forEach { node ->
-            val uuid = uuidFromService(service)
-            if (node.uuid == uuid.toString()) {
-                api.meshNetwork?.deleteNode(node)
-                notify.notifyListeners("node", JSObject().apply {
-                    put("action", "del")
-                    put("unicastAddress", node.unicastAddress)
-                })
-            }
+    fun delNodeByName(name: String) {
+        api.meshNetwork?.nodes?.filter { node ->
+            node.nodeName.equals(name, true)
+        }?.forEach { node ->
+            api.meshNetwork?.deleteNode(node)
+            notify.notifyListeners("node", JSObject().apply {
+                put("action", "del")
+                put("unicastAddress", node.unicastAddress)
+            })
         }
     }
 
@@ -594,7 +583,7 @@ class MeshManager {
         this.api.identifyNode(uuid)
     }
 
-    fun provision(uuid: UUID) {
+    fun provision(uuid: UUID, name: String) {
         val unode = unodes.find {
             it.deviceUuid == uuid
         }
@@ -604,7 +593,7 @@ class MeshManager {
             unode!!.numberOfElements, provisioner!!
         )
 
-        unode!!.nodeName = unicastAddress.toString()
+        unode!!.nodeName = name.uppercase()
 
         api.meshNetwork!!.assignUnicastAddress(unicastAddress!!)
         api.startProvisioning(unode)

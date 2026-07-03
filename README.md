@@ -1397,7 +1397,6 @@ Creates a new function.
 | **`name`**        | <code>string</code>  |
 | **`provisioned`** | <code>boolean</code> |
 | **`rssi`**        | <code>number</code>  |
-| **`uuid`**        | <code>string</code>  |
 
 
 #### ScanOptions
@@ -1428,16 +1427,13 @@ Creates a new function.
 | Prop          | Type                |
 | ------------- | ------------------- |
 | **`address`** | <code>string</code> |
-| **`uuid`**    | <code>string</code> |
 
 
 #### ProvisionResults
 
-| Prop                 | Type                 |
-| -------------------- | -------------------- |
-| **`completed`**      | <code>boolean</code> |
-| **`uuid`**           | <code>string</code>  |
-| **`unicastAddress`** | <code>number</code>  |
+| Prop                 | Type                |
+| -------------------- | ------------------- |
+| **`unicastAddress`** | <code>number</code> |
 
 
 #### ProvisionOptions
@@ -1445,7 +1441,6 @@ Creates a new function.
 | Prop          | Type                |
 | ------------- | ------------------- |
 | **`address`** | <code>string</code> |
-| **`uuid`**    | <code>string</code> |
 
 
 #### CompositionResults

@@ -1,8 +1,10 @@
 package com.autorunify.capacitor.nrfmesh
 
 import android.bluetooth.BluetoothDevice
+import android.os.ParcelUuid
 import no.nordicsemi.android.support.v18.scanner.ScanRecord
 import no.nordicsemi.android.support.v18.scanner.ScanResult
+import java.util.UUID
 
 class MeshDevice {
     val scanResult: ScanResult
@@ -16,7 +18,6 @@ class MeshDevice {
         get() = device.address
 
     var provisioned: Boolean = false
-    var uuid: String? = null
 
     constructor(scanResult: ScanResult) {
         this.scanResult = scanResult
@@ -46,4 +47,8 @@ class MeshDevice {
         return result
     }
 
+    fun getService(serviceUuid: UUID): ByteArray? {
+        val scanRecord: ScanRecord = scanResult.scanRecord ?: return null
+        return scanRecord.getServiceData(ParcelUuid((serviceUuid)))
+    }
 }

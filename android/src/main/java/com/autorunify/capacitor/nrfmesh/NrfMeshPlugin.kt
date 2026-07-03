@@ -68,7 +68,6 @@ import no.nordicsemi.android.mesh.transport.ConfigSigModelAppGet
 import no.nordicsemi.android.mesh.transport.ConfigVendorModelAppGet
 import no.nordicsemi.android.mesh.transport.GenericOnOffGet
 import no.nordicsemi.android.mesh.transport.GenericOnOffSet
-import java.util.UUID
 import kotlin.random.Random
 
 @CapacitorPlugin(
@@ -516,14 +515,11 @@ class NrfMeshPlugin : Plugin {
             try {
                 val address = call.getString("address")
                     ?: return@launch call.reject("address is required")
-                val uuid = call.getString("uuid")
-                    ?: return@launch call.reject("uuid is required")
 
-                if (!ble.connectToUnprovisioned(address, uuid)) {
-                    return@launch call.reject("Failed to connect to device : $address $uuid")
-                }
+                val uuid = ble.connectToUnprovisioned(address)
+                    ?: return@launch call.reject("Failed to connect to device : $address")
 
-                mesh.identify(UUID.fromString(uuid))
+                mesh.identify(uuid)
 
                 val timeout = call.getInt("timeout", defaultTimeout)
                 async.on(call, MESH_NODE_IDENTIFY).timeout(timeout!!)
@@ -544,14 +540,10 @@ class NrfMeshPlugin : Plugin {
             try {
                 val address = call.getString("address")
                     ?: return@launch call.reject("address is required")
-                val uuid = call.getString("uuid")
-                    ?: return@launch call.reject("uuid is required")
+                val uuid = ble.connectToUnprovisioned(address)
+                    ?: return@launch call.reject("Failed to connect to device : $address")
 
-                if (!ble.connectToUnprovisioned(address, uuid)) {
-                    return@launch call.reject("Failed to connect to device : $address $uuid")
-                }
-
-                mesh.provision(UUID.fromString(uuid))
+                mesh.provision(uuid, address.replace(":", ""))
 
                 val timeout = call.getInt("timeout", defaultTimeout)
                 async.on(call, MESH_NODE_PROVISION).timeout(timeout!!)
